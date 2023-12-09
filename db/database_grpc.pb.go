@@ -38,7 +38,7 @@ type ClientServiceClient interface {
 	// Метод для обновления пароля клиента
 	UpdateClientPassword(ctx context.Context, in *UpdateClientPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Метод для добавления нового клиента
-	AddClient(ctx context.Context, in *AddClientRequest, opts ...grpc.CallOption) (*Client, error)
+	AddClient(ctx context.Context, in *AddClientRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Метод для получения списка логинов
 	GetLogins(ctx context.Context, in *GetLoginsRequest, opts ...grpc.CallOption) (*GetLoginsResponse, error)
 }
@@ -78,8 +78,8 @@ func (c *clientServiceClient) UpdateClientPassword(ctx context.Context, in *Upda
 	return out, nil
 }
 
-func (c *clientServiceClient) AddClient(ctx context.Context, in *AddClientRequest, opts ...grpc.CallOption) (*Client, error) {
-	out := new(Client)
+func (c *clientServiceClient) AddClient(ctx context.Context, in *AddClientRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, ClientService_AddClient_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ type ClientServiceServer interface {
 	// Метод для обновления пароля клиента
 	UpdateClientPassword(context.Context, *UpdateClientPasswordRequest) (*emptypb.Empty, error)
 	// Метод для добавления нового клиента
-	AddClient(context.Context, *AddClientRequest) (*Client, error)
+	AddClient(context.Context, *AddClientRequest) (*emptypb.Empty, error)
 	// Метод для получения списка логинов
 	GetLogins(context.Context, *GetLoginsRequest) (*GetLoginsResponse, error)
 	mustEmbedUnimplementedClientServiceServer()
@@ -126,7 +126,7 @@ func (UnimplementedClientServiceServer) ChangeProfilePhoto(context.Context, *Cha
 func (UnimplementedClientServiceServer) UpdateClientPassword(context.Context, *UpdateClientPasswordRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateClientPassword not implemented")
 }
-func (UnimplementedClientServiceServer) AddClient(context.Context, *AddClientRequest) (*Client, error) {
+func (UnimplementedClientServiceServer) AddClient(context.Context, *AddClientRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddClient not implemented")
 }
 func (UnimplementedClientServiceServer) GetLogins(context.Context, *GetLoginsRequest) (*GetLoginsResponse, error) {
