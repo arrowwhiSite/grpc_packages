@@ -25,6 +25,12 @@ const (
 	ClientService_UpdateClientPassword_FullMethodName = "/chat.ClientService/UpdateClientPassword"
 	ClientService_AddClient_FullMethodName            = "/chat.ClientService/AddClient"
 	ClientService_GetLogins_FullMethodName            = "/chat.ClientService/GetLogins"
+	ClientService_GetChatData_FullMethodName          = "/chat.ClientService/GetChatData"
+	ClientService_AddMessage_FullMethodName           = "/chat.ClientService/AddMessage"
+	ClientService_SelectMessages_FullMethodName       = "/chat.ClientService/SelectMessages"
+	ClientService_MakeMessagesRead_FullMethodName     = "/chat.ClientService/MakeMessagesRead"
+	ClientService_SelectMessageById_FullMethodName    = "/chat.ClientService/SelectMessageById"
+	ClientService_AddFeedback_FullMethodName          = "/chat.ClientService/AddFeedback"
 )
 
 // ClientServiceClient is the client API for ClientService service.
@@ -41,6 +47,15 @@ type ClientServiceClient interface {
 	AddClient(ctx context.Context, in *AddClientRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Метод для получения списка логинов
 	GetLogins(ctx context.Context, in *GetLoginsRequest, opts ...grpc.CallOption) (*GetLoginsResponse, error)
+	// Метод для получения данных о чатах
+	GetChatData(ctx context.Context, in *GetChatDataRequest, opts ...grpc.CallOption) (*GetChatDataResponse, error)
+	// ///////////////////////////////////////
+	AddMessage(ctx context.Context, in *AddMessageRequest, opts ...grpc.CallOption) (*Message, error)
+	SelectMessages(ctx context.Context, in *SelectMessagesRequest, opts ...grpc.CallOption) (*RepeatedMessagesResponse, error)
+	MakeMessagesRead(ctx context.Context, in *MakeMessagesReadRequest, opts ...grpc.CallOption) (*UpdatedMessagesResponse, error)
+	SelectMessageById(ctx context.Context, in *SelectMessageByIdRequest, opts ...grpc.CallOption) (*Message, error)
+	// ///////////////////////////////////////
+	AddFeedback(ctx context.Context, in *AddFeedbackRequest, opts ...grpc.CallOption) (*AddFeedbackResponse, error)
 }
 
 type clientServiceClient struct {
@@ -96,6 +111,60 @@ func (c *clientServiceClient) GetLogins(ctx context.Context, in *GetLoginsReques
 	return out, nil
 }
 
+func (c *clientServiceClient) GetChatData(ctx context.Context, in *GetChatDataRequest, opts ...grpc.CallOption) (*GetChatDataResponse, error) {
+	out := new(GetChatDataResponse)
+	err := c.cc.Invoke(ctx, ClientService_GetChatData_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clientServiceClient) AddMessage(ctx context.Context, in *AddMessageRequest, opts ...grpc.CallOption) (*Message, error) {
+	out := new(Message)
+	err := c.cc.Invoke(ctx, ClientService_AddMessage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clientServiceClient) SelectMessages(ctx context.Context, in *SelectMessagesRequest, opts ...grpc.CallOption) (*RepeatedMessagesResponse, error) {
+	out := new(RepeatedMessagesResponse)
+	err := c.cc.Invoke(ctx, ClientService_SelectMessages_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clientServiceClient) MakeMessagesRead(ctx context.Context, in *MakeMessagesReadRequest, opts ...grpc.CallOption) (*UpdatedMessagesResponse, error) {
+	out := new(UpdatedMessagesResponse)
+	err := c.cc.Invoke(ctx, ClientService_MakeMessagesRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clientServiceClient) SelectMessageById(ctx context.Context, in *SelectMessageByIdRequest, opts ...grpc.CallOption) (*Message, error) {
+	out := new(Message)
+	err := c.cc.Invoke(ctx, ClientService_SelectMessageById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clientServiceClient) AddFeedback(ctx context.Context, in *AddFeedbackRequest, opts ...grpc.CallOption) (*AddFeedbackResponse, error) {
+	out := new(AddFeedbackResponse)
+	err := c.cc.Invoke(ctx, ClientService_AddFeedback_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClientServiceServer is the server API for ClientService service.
 // All implementations must embed UnimplementedClientServiceServer
 // for forward compatibility
@@ -110,6 +179,15 @@ type ClientServiceServer interface {
 	AddClient(context.Context, *AddClientRequest) (*emptypb.Empty, error)
 	// Метод для получения списка логинов
 	GetLogins(context.Context, *GetLoginsRequest) (*GetLoginsResponse, error)
+	// Метод для получения данных о чатах
+	GetChatData(context.Context, *GetChatDataRequest) (*GetChatDataResponse, error)
+	// ///////////////////////////////////////
+	AddMessage(context.Context, *AddMessageRequest) (*Message, error)
+	SelectMessages(context.Context, *SelectMessagesRequest) (*RepeatedMessagesResponse, error)
+	MakeMessagesRead(context.Context, *MakeMessagesReadRequest) (*UpdatedMessagesResponse, error)
+	SelectMessageById(context.Context, *SelectMessageByIdRequest) (*Message, error)
+	// ///////////////////////////////////////
+	AddFeedback(context.Context, *AddFeedbackRequest) (*AddFeedbackResponse, error)
 	mustEmbedUnimplementedClientServiceServer()
 }
 
@@ -131,6 +209,24 @@ func (UnimplementedClientServiceServer) AddClient(context.Context, *AddClientReq
 }
 func (UnimplementedClientServiceServer) GetLogins(context.Context, *GetLoginsRequest) (*GetLoginsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLogins not implemented")
+}
+func (UnimplementedClientServiceServer) GetChatData(context.Context, *GetChatDataRequest) (*GetChatDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChatData not implemented")
+}
+func (UnimplementedClientServiceServer) AddMessage(context.Context, *AddMessageRequest) (*Message, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMessage not implemented")
+}
+func (UnimplementedClientServiceServer) SelectMessages(context.Context, *SelectMessagesRequest) (*RepeatedMessagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectMessages not implemented")
+}
+func (UnimplementedClientServiceServer) MakeMessagesRead(context.Context, *MakeMessagesReadRequest) (*UpdatedMessagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MakeMessagesRead not implemented")
+}
+func (UnimplementedClientServiceServer) SelectMessageById(context.Context, *SelectMessageByIdRequest) (*Message, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectMessageById not implemented")
+}
+func (UnimplementedClientServiceServer) AddFeedback(context.Context, *AddFeedbackRequest) (*AddFeedbackResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddFeedback not implemented")
 }
 func (UnimplementedClientServiceServer) mustEmbedUnimplementedClientServiceServer() {}
 
@@ -235,6 +331,114 @@ func _ClientService_GetLogins_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClientService_GetChatData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChatDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).GetChatData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClientService_GetChatData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).GetChatData(ctx, req.(*GetChatDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClientService_AddMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).AddMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClientService_AddMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).AddMessage(ctx, req.(*AddMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClientService_SelectMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectMessagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).SelectMessages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClientService_SelectMessages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).SelectMessages(ctx, req.(*SelectMessagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClientService_MakeMessagesRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MakeMessagesReadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).MakeMessagesRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClientService_MakeMessagesRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).MakeMessagesRead(ctx, req.(*MakeMessagesReadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClientService_SelectMessageById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectMessageByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).SelectMessageById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClientService_SelectMessageById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).SelectMessageById(ctx, req.(*SelectMessageByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClientService_AddFeedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddFeedbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClientServiceServer).AddFeedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClientService_AddFeedback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClientServiceServer).AddFeedback(ctx, req.(*AddFeedbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClientService_ServiceDesc is the grpc.ServiceDesc for ClientService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -261,6 +465,30 @@ var ClientService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLogins",
 			Handler:    _ClientService_GetLogins_Handler,
+		},
+		{
+			MethodName: "GetChatData",
+			Handler:    _ClientService_GetChatData_Handler,
+		},
+		{
+			MethodName: "AddMessage",
+			Handler:    _ClientService_AddMessage_Handler,
+		},
+		{
+			MethodName: "SelectMessages",
+			Handler:    _ClientService_SelectMessages_Handler,
+		},
+		{
+			MethodName: "MakeMessagesRead",
+			Handler:    _ClientService_MakeMessagesRead_Handler,
+		},
+		{
+			MethodName: "SelectMessageById",
+			Handler:    _ClientService_SelectMessageById_Handler,
+		},
+		{
+			MethodName: "AddFeedback",
+			Handler:    _ClientService_AddFeedback_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

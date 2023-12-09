@@ -19,23 +19,68 @@ message Client {
   string profile_photo = 7;
 }
 
+// Определение сообщения для сообщения чата
+message ChatMessage {
+  enum Rotation {
+    TO = 0;
+    FROM = 1;
+  }
+
+  Rotation rotation = 1;
+  string username = 2;
+  string message = 3;
+  int32 unread = 4;
+  google.protobuf.Timestamp create_date = 5;
+  string profile_photo = 6;
+}
+
+
+message Message {
+  uint32 id = 1;
+  string user_from = 2;
+  string user_to = 3;
+  string message = 4;
+  bool is_read = 5;
+  google.protobuf.Timestamp create_date = 6;
+}
+
+message FeedbackType {
+  uint32 id = 1;
+  string type = 2;
+}
+
+message Feedback {
+  uint32 id = 1;
+  uint32 type_id = 2;
+  string description = 3;
+  bool done = 4;
+  bool trashed = 5;
+}
+
 
 // Определение сервиса чата
 service ClientService {
   // Метод для выборки клиента по логину
   rpc SelectClientByLogin (SelectClientRequest) returns (Client);
-
   // Метод для изменения фотографии профиля клиента
   rpc ChangeProfilePhoto (ChangeProfilePhotoRequest) returns (google.protobuf.Empty);
-
   // Метод для обновления пароля клиента
   rpc UpdateClientPassword (UpdateClientPasswordRequest) returns (google.protobuf.Empty);
-
   // Метод для добавления нового клиента
   rpc AddClient (AddClientRequest) returns (google.protobuf.Empty);
-
   // Метод для получения списка логинов
   rpc GetLogins (GetLoginsRequest) returns (GetLoginsResponse);
+  // Метод для получения данных о чатах
+  rpc GetChatData (GetChatDataRequest) returns (GetChatDataResponse);
+
+  /////////////////////////////////////////
+  rpc AddMessage(AddMessageRequest) returns (Message);
+  rpc SelectMessages(SelectMessagesRequest) returns (RepeatedMessagesResponse);
+  rpc MakeMessagesRead(MakeMessagesReadRequest) returns (UpdatedMessagesResponse);
+  rpc SelectMessageById(SelectMessageByIdRequest) returns (Message);
+
+  /////////////////////////////////////////
+  rpc AddFeedback(AddFeedbackRequest) returns (AddFeedbackResponse);
 
 }
 
@@ -66,4 +111,55 @@ message GetLoginsRequest {}
 
 message GetLoginsResponse {
   repeated string logins = 1;
+}
+
+message GetChatDataRequest {
+  string login = 1;
+}
+
+message GetChatDataResponse {
+  repeated ChatMessage messages = 1;
+}
+
+message AddMessageRequest {
+  string message = 1;
+  string from = 2;
+  string to = 3;
+}
+
+
+message SelectMessagesRequest {
+  string from = 1;
+  string to = 2;
+  int32 count = 3;
+  int32 first_id = 4;
+}
+
+
+message RepeatedMessagesResponse {
+  repeated Message messages = 1;
+}
+
+
+message MakeMessagesReadRequest {
+  repeated int32 ids = 1;
+}
+
+
+message UpdatedMessagesResponse {
+  repeated int32 updated_ids = 1;
+}
+
+
+message SelectMessageByIdRequest {
+  int32 id = 1;
+}
+
+message AddFeedbackRequest {
+  Feedback feedback = 1;
+}
+
+message AddFeedbackResponse {
+  bool success = 1;
+  string error_message = 2;
 }
