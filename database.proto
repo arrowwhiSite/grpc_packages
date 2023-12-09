@@ -59,6 +59,7 @@ message AddClientRequest {
   string last_name = 2;
   string login = 3;
   string password = 4;
+  string email = 5;
 }
 
 message GetLoginsRequest {}
