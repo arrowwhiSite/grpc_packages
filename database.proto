@@ -65,5 +65,5 @@ message AddClientRequest {
 message GetLoginsRequest {}
 
 message GetLoginsResponse {
-  repeated string login = 1;
+  repeated string logins = 1;
 }
